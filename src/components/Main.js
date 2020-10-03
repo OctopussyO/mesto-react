@@ -3,7 +3,7 @@ import React from 'react';
 function Main() {
 
   return (
-    <main className="page__narrow">
+    <main className="main page__narrow">
       <div className="spinner" />
       <div className="content">
         <section className="profile">
