@@ -1,39 +1,16 @@
 import React from 'react';
-import './App.css';
-import logoPath from './images/logo.svg';
+import Header from './Header';
+import Main from './Main';
+import Footer from './Footer';
 
 function App() {
 
   return (
     <div className="page">
       <div className="page__container">
-        <header className="header">
-          <img src={logoPath} alt="Логотип проекта 'Место'" className="header__logo" />
-        </header>
-        <main className="page__narrow">
-          <div className="spinner" />
-          <div className="content">
-            <section className="profile">
-              <div className="profile__image">
-                <button className="profile__avatar-button" aria-label="Редактировать" type="button" />
-              </div>
-              <div className="profile__data">
-                { /* Отключаем встроенное правило для следующей строки, чтобы консоль 
-                не ругалась на отсутчтвие текста в заголовке */ }
-                {  /* eslint-disable-next-line */ }
-                <h1 className="profile__name" />
-                <button className="profile__edit-button page__button" aria-label="Редактировать" type="button" />
-                <p className="profile__profession" />
-              </div>
-              <button className="profile__add-button page__button" aria-label="Добавить" type="button" />
-            </section>
-            <section className="gallery">
-            </section>
-          </div>
-        </main>
-        <footer className="footer page__narrow">
-          <p className="footer__copyright">&copy;&nbsp;2020 Mesto Russia</p>
-        </footer>
+        <Header />
+        <Main />
+        <Footer />
       </div>
       <div className="popup popup_act_edit-profile">
         <form action="#" className="popup__container popup__container_with_form" name="edit-form" method="GET" noValidate>
