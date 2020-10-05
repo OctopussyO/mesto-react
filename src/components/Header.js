@@ -5,7 +5,11 @@ function Header() {
 
   return (
     <header className="header">
-      <img src={logoPath} alt="Логотип проекта 'Место'" className="header__logo" />
+      <img
+        className="header__logo"
+        src={logoPath}
+        alt="Логотип проекта 'Место'"
+      />
     </header>
   )
 }
