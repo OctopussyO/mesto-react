@@ -10,6 +10,15 @@
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.3"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OctopussyO/mesto-react.git"
+  },
+  "author": "Yuliya Doroshina",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OctopussyO/mesto-react/issues"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
