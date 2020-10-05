@@ -1,26 +1,41 @@
 import React from 'react';
 import { api } from '../utils/api.js';
+import { initialCardsData, initialUserData } from '../utils/utils.js';
 import Card from './Card.js';
+
 
 function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
   const [userName, setUserName] = React.useState('');
   const [userDescription, setUserDescription] = React.useState('');
   const [userAvatar, setUserAvatar] = React.useState('');
   const [cards, setCards] = React.useState([]);
+  // Переменная состояния для загрузки (показываем/убираем спиннер)
   const [isLoading, setLoadingState] = React.useState(true);
+  
+  const setData = (userData, cardsData) => {
+    setUserName(userData.name);
+    setUserDescription(userData.about);
+    setUserAvatar(userData.avatar);
+    setCards(cardsData);
+  }
 
   React.useEffect(() => {
     // Загружаем данные с сервера
     Promise.all([api.getUserData(), api.getData()])
       .then(([userData, cardsData]) => {
-        setUserName(userData.name);
-        setUserDescription(userData.about);
-        setUserAvatar(userData.avatar);
-        setCards(cardsData);
+        setData(userData, cardsData);
       })
       // Если данные не загрузились, используем тестовые данные
       .catch((err) => {
         alert(`${err}: Приложение работает в тестовом режиме!`);
+        const cardsData = initialCardsData.map((card) => {
+          // Генерируем id. Реализация не самая надёжная, 
+          // но для теста и 6 карточек пойдёт.
+          card._id = `f${(~~(Math.random()*1e8)).toString(16)}`;
+          card.likes = [];
+          return card;
+        })
+        setData(initialUserData, cardsData);
       })
       .finally(() => {
         setLoadingState(false);

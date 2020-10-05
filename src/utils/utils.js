@@ -1,5 +1,12 @@
+// Объект исходных данных пользователя
+export const initialUserData = {
+  name: 'Фёдор Конюхов',
+  about: 'Российский путешественник',
+  avatar: 'https://uznayvse.ru/images/celebs/konuhov_medium.jpg'
+}
+
 // Массив с данными исходных карточек
-export const initialCards = [
+export const initialCardsData = [
   {
     name: 'Алтайский край',
     link: 'https://images.unsplash.com/photo-1494791286225-ea86fc957ba7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1947&q=80'
@@ -25,6 +32,15 @@ export const initialCards = [
     link: 'https://images.unsplash.com/photo-1563943078-d83d3fb86468?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2134&q=80'
   }
 ]
+
+// Объект данных для API
+export const apiConfig = {
+  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-15',
+  headers: {
+    authorization: '584f4afd-78a5-47f8-908c-ac61484f6bb9',
+    'Content-Type': 'application/json'
+  }
+}
 
 // Объект валидации
 export const objectOfValidation = {
@@ -54,31 +70,17 @@ export const confirmPopupSelector = '.popup_act_confirm';
 export const sectionSelector = '.gallery';
 export const cardSelector = '.card-template';
 
-// Wrappers
-const content = document.querySelector(contentSelector);
-const spinner = document.querySelector(spinnerSelector);
+// // Wrappers
+// const content = document.querySelector(contentSelector);
+// const spinner = document.querySelector(spinnerSelector);
 
-// Функция отрисовки спиннера при загрузке страницы
-export const renderLoading = (isLoading) => {
-  if (isLoading) {
-    spinner.classList.add('spinner_visible');
-    content.classList.add('content_hidden');
-  } else {
-    spinner.classList.remove('spinner_visible');
-    content.classList.remove('content_hidden');
-  }
-}
-
-export const apiConfig = {
-  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-15',
-  headers: {
-    authorization: '584f4afd-78a5-47f8-908c-ac61484f6bb9',
-    'Content-Type': 'application/json'
-  }
-}
-
-export const initialUserData = {
-  name: 'Фёдор Конюхов',
-  about: 'Российский путешественник',
-  avatar: 'https://uznayvse.ru/images/celebs/konuhov_medium.jpg'
-}
+// // Функция отрисовки спиннера при загрузке страницы
+// export const renderLoading = (isLoading) => {
+//   if (isLoading) {
+//     spinner.classList.add('spinner_visible');
+//     content.classList.add('content_hidden');
+//   } else {
+//     spinner.classList.remove('spinner_visible');
+//     content.classList.remove('content_hidden');
+//   }
+// }
