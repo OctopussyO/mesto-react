@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
@@ -47,15 +47,12 @@ const getSubmitTemplate = (submitTitle, isSubmitActive) => {
 
 function App() {
   // Используем хуки состояния для открытия попапов
-  const [isEditProfilePopupOpen, setEditProfilePopupState] = React.useState(
-    false
-  );
-  const [isAddPlacePopupOpen, setAddPlacePopupState] = React.useState(false);
-  const [isEditAvatarPopupOpen, setEditAvatarPopupState] = React.useState(
-    false
-  );
-  const [isImagePopupOpen, setImagePopupState] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState({});
+  const [isEditProfilePopupOpen, setEditProfilePopupState] = useState(false);
+  const [isAddPlacePopupOpen, setAddPlacePopupState] = useState(false);
+  const [isEditAvatarPopupOpen, setEditAvatarPopupState] = useState(false);
+  const [isImagePopupOpen, setImagePopupState] = useState(false);
+
+  const [selectedCard, setSelectedCard] = useState({});
 
   const handleEditAvatarClick = () => {
     setEditAvatarPopupState(true);

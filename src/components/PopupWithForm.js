@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 function PopupWithForm({ title, name, children, isOpen, onClose }) {
   // Обработчик клика по оверлею
@@ -16,7 +16,7 @@ function PopupWithForm({ title, name, children, isOpen, onClose }) {
   }  
 
   // Используем хук эффекта для закрытия модалки по нажатию клавиши "Escape"
-  React.useEffect(() => {
+  useEffect(() => {
     document.body.addEventListener('keydown', handleEscape);
     return () => {
       document.body.removeEventListener('keydown', handleEscape);

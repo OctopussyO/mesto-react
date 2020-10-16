@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { api } from '../utils/api.js';
 import { initialCardsData, initialUserData } from '../utils/utils.js';
 import Card from './Card.js';
 
 
 function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
-  const [userName, setUserName] = React.useState('');
-  const [userDescription, setUserDescription] = React.useState('');
-  const [userAvatar, setUserAvatar] = React.useState('');
-  const [cards, setCards] = React.useState([]);
+  const [userName, setUserName] = useState('');
+  const [userDescription, setUserDescription] = useState('');
+  const [userAvatar, setUserAvatar] = useState('');
+  const [cards, setCards] = useState([]);
   // Переменная состояния для загрузки (показываем/убираем спиннер)
-  const [isLoading, setLoadingState] = React.useState(true);
+  const [isLoading, setLoadingState] = useState(true);
   
   const setData = (userData, cardsData) => {
     setUserName(userData.name);
@@ -19,13 +19,15 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
     setCards(cardsData);
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Загружаем данные с сервера
     Promise.all([api.getUserData(), api.getData()])
       .then(([userData, cardsData]) => {
         setData(userData, cardsData);
       })
       // Если данные не загрузились, используем тестовые данные
+      // на случай, если вдруг крякнется сервер ЯП.
+      // планирую переделать на какой-нибудь открытый API
       .catch((err) => {
         alert(`${err}: Приложение работает в тестовом режиме!`);
         const cardsData = initialCardsData.map((card) => {
