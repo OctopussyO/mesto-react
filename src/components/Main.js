@@ -1,98 +1,90 @@
-import React, { useState, useEffect } from 'react';
-import { api } from '../utils/api.js';
-import { initialCardsData, initialUserData } from '../utils/utils.js';
-import Card from './Card.js';
-
+import React, { useState, useEffect, useContext } from "react";
+import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
+import { api } from "../utils/api.js";
+import { initialCardsData } from "../utils/utils.js";
+import Card from "./Card.js";
 
 function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
-  const [userName, setUserName] = useState('');
-  const [userDescription, setUserDescription] = useState('');
-  const [userAvatar, setUserAvatar] = useState('');
   const [cards, setCards] = useState([]);
   // Переменная состояния для загрузки (показываем/убираем спиннер)
   const [isLoading, setLoadingState] = useState(true);
-  
-  const setData = (userData, cardsData) => {
-    setUserName(userData.name);
-    setUserDescription(userData.about);
-    setUserAvatar(userData.avatar);
-    setCards(cardsData);
-  }
+
+  const userData = useContext(CurrentUserContext);
+  const userName = userData.name;
+  const userDescription = userData.about;
+  const userAvatar = userData.avatar;
 
   useEffect(() => {
     // Загружаем данные с сервера
-    Promise.all([api.getUserData(), api.getData()])
-      .then(([userData, cardsData]) => {
-        setData(userData, cardsData);
+    api.getData()
+      .then((cardsData) => {
+        setCards(cardsData);
       })
-      // Если данные не загрузились, используем тестовые данные
-      // на случай, если вдруг крякнется сервер ЯП.
-      // планирую переделать на какой-нибудь открытый API
       .catch((err) => {
-        alert(`${err}: Приложение работает в тестовом режиме!`);
+        // Если данные не загрузились, используем тестовые данные на случай, если крякнется сервер ЯП.
+        // планирую переделать на какой-нибудь открытый API
+
         const cardsData = initialCardsData.map((card) => {
-          // Генерируем id. Реализация не самая надёжная, 
-          // но для теста и 6 карточек пойдёт.
-          card._id = `f${(~~(Math.random()*1e8)).toString(16)}`;
+          // Генерируем id. Реализация не самая надёжная, но для теста и 6 карточек пойдёт.
+          card._id = `f${(~~(Math.random() * 1e8)).toString(16)}`;
           card.likes = [];
           return card;
-        })
-        setData(initialUserData, cardsData);
+        });
+        setCards(cardsData);
       })
       .finally(() => {
         setLoadingState(false);
-      })
-
+      });
   }, []);
-    
+
   return (
     <main className="main page__narrow">
-      { isLoading
-      ? ( <div className="spinner spinner_visible" /> )
-      : (
+      {isLoading ? (
+        <div className="spinner spinner_visible" />
+      ) : (
         <div className="content">
           <section className="profile">
-            <div 
+            <div
               className="profile__image"
-              style={{ backgroundImage: `url(${ userAvatar })` }}
+              style={{ backgroundImage: `url(${userAvatar})` }}
             >
               <button
                 className="profile__avatar-button"
                 aria-label="Редактировать"
                 type="button"
-                onClick={ onEditAvatar }
+                onClick={onEditAvatar}
               />
             </div>
             <div className="profile__data">
-              { /* Отключаем встроенное правило для следующей строки, чтобы консоль 
+              {/* Отключаем встроенное правило для следующей строки, чтобы консоль 
               не ругалась на отсутствие текста в заголовке 
-              После заполнения поля это уже не нужно, но оставлю пока на память */ }
-              {  /* eslint-disable-next-line */ }
-              <h1 className="profile__name">{ userName }</h1>
+              После заполнения поля это уже не нужно, но оставлю пока на память */}
+              {/* eslint-disable-next-line */}
+              <h1 className="profile__name">{userName}</h1>
               <button
                 className="profile__edit-button page__button"
                 aria-label="Редактировать"
                 type="button"
-                onClick={ onEditProfile }
+                onClick={onEditProfile}
               />
-              <p className="profile__profession">{ userDescription }</p>
+              <p className="profile__profession">{userDescription}</p>
             </div>
             <button
               className="profile__add-button page__button"
               aria-label="Добавить"
               type="button"
-              onClick={ onAddPlace }
+              onClick={onAddPlace}
             />
           </section>
           <section className="gallery">
-            { cards.map(({ _id, ...card }) => (
-              <Card key={ _id } { ...card } onCardClick={ onCardClick } />
+            {cards.map(({ _id, ...card }) => (
+              <Card key={_id} {...card} onCardClick={onCardClick} />
             ))}
           </section>
         </div>
       )}
     </main>
-  )
+  );
 }
 
 export default Main;
