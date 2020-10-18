@@ -1,13 +1,17 @@
 import React, { useContext } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-function Card({ name, link, likes, _id, owner, onCardClick, onCardLike }) {
+function Card({ name, link, likes, _id, owner, onCardClick, onCardLike, onCardDelete }) {
   const handleClick = () => {
     onCardClick({ name, link });
   };
 
   const handleLikeClick = () => {
     onCardLike({likes, _id});
+  }
+
+  const handleDeleteClick = () => {
+    onCardDelete({_id});
   }
 
   const currentUser = useContext(CurrentUserContext);
@@ -24,6 +28,7 @@ function Card({ name, link, likes, _id, owner, onCardClick, onCardLike }) {
           className="card__button card__button_act_delete page__button"
           type="button"
           aria-label="Удалить"
+          onClick={handleDeleteClick}
         >
           <svg
             width="18"

@@ -6,33 +6,40 @@ import Card from "./Card.js";
 function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
   // Переменная состояния для загрузки (показываем/убираем спиннер)
   const [isLoading, setLoadingState] = useState(true);
-  
+
   const userData = useContext(CurrentUserContext);
   const userName = userData.name;
   const userDescription = userData.about;
   const userAvatar = userData.avatar;
-  
+
   const [cards, setCards] = useState([]);
 
   const handleCardLike = (card) => {
     const isLiked = card.likes.some(like => like._id === userData._id);
-    const handleLikeClick = isLiked ? api.unlikeItem.bind(api) : api.likeItem.bind(api);
-    handleLikeClick(card._id, !isLiked)
-      .then((newCard) => {
-        const newCards = cards.map(cardItem => cardItem._id === card._id ? newCard : cardItem);
-        setCards(newCards);
-      })
-  }
+    const handleLikeClick = isLiked
+      ? api.unlikeItem.bind(api)
+      : api.likeItem.bind(api);
+    handleLikeClick(card._id, !isLiked).then((newCard) => {
+      const newCards = cards.map((cardItem) =>
+        cardItem._id === card._id ? newCard : cardItem
+      );
+      setCards(newCards);
+    });
+  };
+
+  const handleCardDelete = (card) => {
+    const newCards = cards.filter(cardItem => cardItem._id !== card._id);
+    setCards(newCards);
+  };
 
   useEffect(() => {
     // Загружаем данные с сервера
-    api.getData()
+    api
+      .getData()
       .then((cardsData) => {
         setCards(cardsData);
       })
-      .catch((err) => {
-
-      })
+      .catch((err) => {})
       .finally(() => {
         setLoadingState(false);
       });
@@ -79,7 +86,13 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
           </section>
           <section className="gallery">
             {cards.map((card) => (
-              <Card key={card._id} {...card} onCardClick={onCardClick} onCardLike={handleCardLike}/>
+              <Card
+                key={card._id}
+                {...card}
+                onCardClick={onCardClick}
+                onCardLike={handleCardLike}
+                onCardDelete={handleCardDelete}
+              />
             ))}
           </section>
         </div>
