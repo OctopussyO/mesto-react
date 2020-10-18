@@ -2,34 +2,59 @@
 export const initialUserData = {
   name: 'Фёдор Конюхов',
   about: 'Российский путешественник',
-  avatar: 'https://uznayvse.ru/images/celebs/konuhov_medium.jpg'
+  avatar: 'https://uznayvse.ru/images/celebs/konuhov_medium.jpg',
+  _id: '01'
 }
 
 // Массив с данными исходных карточек
 export const initialCardsData = [
   {
     name: 'Алтайский край',
-    link: 'https://images.unsplash.com/photo-1494791286225-ea86fc957ba7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1947&q=80'
+    link: 'https://images.unsplash.com/photo-1494791286225-ea86fc957ba7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1947&q=80',
+    owner: {
+      name: 'Конюхов',
+      _id: '01'
+    }
   },
   {
     name: 'Ладожское озеро',
-    link: 'https://images.unsplash.com/photo-1547846218-c982107d30f2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1972&q=80'
+    link: 'https://images.unsplash.com/photo-1547846218-c982107d30f2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1972&q=80',
+    owner: {
+      name: 'Жак-Ив Кусто',
+      _id: '02'
+    }
   },
   {
     name: 'Гора Нургуш',
-    link: 'https://images.unsplash.com/photo-1506516493400-bb5e8347bf0e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1955&q=80'
+    link: 'https://images.unsplash.com/photo-1506516493400-bb5e8347bf0e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1955&q=80',
+    owner: {
+      name: 'Конюхов',
+      _id: '01'
+    }
   },
   {
     name: 'Судак, Крым',
-    link: 'https://images.unsplash.com/photo-1565342403875-07a8dc5ed13c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2000&q=80'
+    link: 'https://images.unsplash.com/photo-1565342403875-07a8dc5ed13c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2000&q=80',
+    owner: {
+      name: 'Конюхов',
+      _id: '01'
+    }
   },
   {
     name: 'Байкал',
-    link: 'https://images.unsplash.com/photo-1551844931-cfcfecb3636f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2034&q=80'
+    link: 'https://images.unsplash.com/photo-1551844931-cfcfecb3636f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2034&q=80',
+    owner: {
+      name: 'Конюхов',
+      _id: '01'
+    }
   },
   {
     name: 'Владивосток',
-    link: 'https://images.unsplash.com/photo-1563943078-d83d3fb86468?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2134&q=80'
+    link: 'https://images.unsplash.com/photo-1563943078-d83d3fb86468?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2134&q=80',
+    owner: {
+      name: 'Конюхов',
+      _id: '01'
+    }
   }
 ]
 
@@ -69,18 +94,3 @@ export const avatarPopupSelector = '.popup_act_edit-avatar';
 export const confirmPopupSelector = '.popup_act_confirm';
 export const sectionSelector = '.gallery';
 export const cardSelector = '.card-template';
-
-// // Wrappers
-// const content = document.querySelector(contentSelector);
-// const spinner = document.querySelector(spinnerSelector);
-
-// // Функция отрисовки спиннера при загрузке страницы
-// export const renderLoading = (isLoading) => {
-//   if (isLoading) {
-//     spinner.classList.add('spinner_visible');
-//     content.classList.add('content_hidden');
-//   } else {
-//     spinner.classList.remove('spinner_visible');
-//     content.classList.remove('content_hidden');
-//   }
-// }

@@ -5,7 +5,6 @@ import Footer from "./Footer";
 import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import { api } from "../utils/api";
-import { initialUserData } from "../utils/utils";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 const getInputTemplate = ({
@@ -86,11 +85,6 @@ function App() {
       .then((userData) => {
         setCurrentUser(userData);
       })
-      .catch((err) => {
-        // Если данные не загрузились, используем тестовые данные на случай, если крякнется сервер ЯП.
-        alert(`${err}: Приложение работает в тестовом режиме!`);
-        setCurrentUser(initialUserData);
-      });
   }, []);
 
   return (

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 import { api } from "../utils/api.js";
-import { initialCardsData } from "../utils/utils.js";
 import Card from "./Card.js";
 
 function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
@@ -18,10 +17,18 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
   const handleCardLike = (card) => {
     const isLiked = card.likes.some(like => like._id === userData._id);
     const handleLikeClick = isLiked ? api.unlikeItem.bind(api) : api.likeItem.bind(api);
-    // api.handleLikeItem(card._id, !isLiked)
     handleLikeClick(card._id, !isLiked)
       .then((newCard) => {
         const newCards = cards.map(cardItem => cardItem._id === card._id ? newCard : cardItem);
+        setCards(newCards);
+      })
+      .catch(() => {
+        if (isLiked) {
+          card.likes.pop();
+        } else {
+          card.likes.push(userData._id);          
+        }
+        const newCards = cards.map(cardItem => cardItem._id === card._id ? card : cardItem);
         setCards(newCards);
       });
   }
@@ -33,16 +40,7 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
         setCards(cardsData);
       })
       .catch((err) => {
-        // Если данные не загрузились, используем тестовые данные на случай, если крякнется сервер ЯП.
-        // планирую переделать на какой-нибудь открытый API
 
-        const cardsData = initialCardsData.map((card) => {
-          // Генерируем id. Реализация не самая надёжная, но для теста и 6 карточек пойдёт.
-          card._id = `f${(~~(Math.random() * 1e8)).toString(16)}`;
-          card.likes = [];
-          return card;
-        });
-        setCards(cardsData);
       })
       .finally(() => {
         setLoadingState(false);
