@@ -22,15 +22,6 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
         const newCards = cards.map(cardItem => cardItem._id === card._id ? newCard : cardItem);
         setCards(newCards);
       })
-      .catch(() => {
-        if (isLiked) {
-          card.likes.pop();
-        } else {
-          card.likes.push(userData._id);          
-        }
-        const newCards = cards.map(cardItem => cardItem._id === card._id ? card : cardItem);
-        setCards(newCards);
-      });
   }
 
   useEffect(() => {
