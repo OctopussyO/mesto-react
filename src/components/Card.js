@@ -1,14 +1,18 @@
 import React, { useContext } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-function Card({ name, link, likes, owner, onCardClick }) {
+function Card({ name, link, likes, _id, owner, onCardClick, onCardLike }) {
   const handleClick = () => {
     onCardClick({ name, link });
   };
 
-  const curerntUser = useContext(CurrentUserContext);
-  const isOwn = owner._id === curerntUser._id;
-  const isLiked = likes.some((like) => like._id === curerntUser._id);
+  const handleLikeClick = () => {
+    onCardLike({likes, _id});
+  }
+
+  const currentUser = useContext(CurrentUserContext);
+  const isOwn = owner._id === currentUser._id;
+  const isLiked = likes.some((like) => like._id === currentUser._id);
   const cardLikeButtonClassName = `card__button card__button_act_like ${
     isLiked && "card__button_active"
   } page__button`;
@@ -51,6 +55,7 @@ function Card({ name, link, likes, owner, onCardClick }) {
             className={cardLikeButtonClassName}
             type="button"
             aria-label="Нравится"
+            onClick={handleLikeClick}
           >
             <svg
               width="20"

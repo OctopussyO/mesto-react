@@ -5,14 +5,26 @@ import { initialCardsData } from "../utils/utils.js";
 import Card from "./Card.js";
 
 function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
-  const [cards, setCards] = useState([]);
   // Переменная состояния для загрузки (показываем/убираем спиннер)
   const [isLoading, setLoadingState] = useState(true);
-
+  
   const userData = useContext(CurrentUserContext);
   const userName = userData.name;
   const userDescription = userData.about;
   const userAvatar = userData.avatar;
+  
+  const [cards, setCards] = useState([]);
+
+  const handleCardLike = (card) => {
+    const isLiked = card.likes.some(like => like._id === userData._id);
+    const handleLikeClick = isLiked ? api.unlikeItem.bind(api) : api.likeItem.bind(api);
+    // api.handleLikeItem(card._id, !isLiked)
+    handleLikeClick(card._id, !isLiked)
+      .then((newCard) => {
+        const newCards = cards.map(cardItem => cardItem._id === card._id ? newCard : cardItem);
+        setCards(newCards);
+      });
+  }
 
   useEffect(() => {
     // Загружаем данные с сервера
@@ -77,8 +89,8 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
             />
           </section>
           <section className="gallery">
-            {cards.map(({ _id, ...card }) => (
-              <Card key={_id} {...card} onCardClick={onCardClick} />
+            {cards.map((card) => (
+              <Card key={card._id} {...card} onCardClick={onCardClick} onCardLike={handleCardLike}/>
             ))}
           </section>
         </div>
