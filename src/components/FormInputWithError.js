@@ -1,7 +1,7 @@
 import React from "react";
 
 const FormInputWithError = React.memo(
-  ({name, placeholder, type, minLength, maxLength, value, onChange}) => {
+  ({name, placeholder, type, minLength, maxLength, value, onChange, inputRef}) => {
     return (
       <>
         <input
@@ -15,6 +15,7 @@ const FormInputWithError = React.memo(
           autoComplete="off"
           value={value}
           onChange={onChange}
+          ref={inputRef}
         />
         <span className={`popup__error popup__error_in_${name}`} />
       </>

@@ -5,9 +5,11 @@ import Footer from "./Footer";
 import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
+
 import { api } from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import { getInputTemplate, getSubmitTemplate } from '../utils/utils';
+import EditAvatarPopup from "./EditAvatarPopup";
 
 function App() {
   // Используем хуки состояния для открытия попапов
@@ -54,6 +56,14 @@ function App() {
       })
   }
 
+  const handleUpdateAvatar = (data) => {
+    api.saveUserAvatar(data)
+      .then((userData) => {
+        setCurrentUser(userData);
+        closeAllPopups();
+      })
+  }
+
   useEffect(() => {
     api.getUserData()
       .then((userData) => {
@@ -80,6 +90,11 @@ function App() {
           onClose={closeAllPopups}
           onUpdateUser={handleUpdateUser}
         />
+        <EditAvatarPopup 
+          isOpen={isEditAvatarPopupOpen}
+          onClose={closeAllPopups}
+          onUpdateAvatar={handleUpdateAvatar}
+        />
         <PopupWithForm
           title="Новое место"
           name="add-card"
@@ -101,21 +116,6 @@ function App() {
             })}
           </fieldset>
           {getSubmitTemplate("Создать", false)}
-        </PopupWithForm>
-        <PopupWithForm
-          title="Обновить аватар"
-          name="edit-avatar"
-          isOpen={isEditAvatarPopupOpen}
-          onClose={closeAllPopups}
-        >
-          <fieldset className="popup__fieldset">
-            {getInputTemplate({
-              name: "avatar",
-              placeholder: "Ссылка на аватар",
-              type: "url",
-            })}
-          </fieldset>
-          {getSubmitTemplate("Сохранить", false)}
         </PopupWithForm>
         <ImagePopup
           isOpen={isImagePopupOpen}
