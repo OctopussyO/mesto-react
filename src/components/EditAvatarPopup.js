@@ -1,25 +1,14 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import PopupWithForm from "./PopupWithForm";
 import FormInputWithError from "./FormInputWithError";
 import FormSubmit from "./FormSubmit";
 
-function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
+function EditAvatarPopup({ onClose, onUpdateAvatar }) {
   const avatarRef = useRef();
   const [avatar, setAvatar] = useState("");
 
   const handleAvatarChange = () => {
     setAvatar(avatarRef.current.value)
-  }
-
-  const clearInputValue = () => {
-    setAvatar("");
-  }
-
-  // Чтобы при закрытии попапа после редактирования без сохранения
-  // сначала закрывалось окно, а потом менялись данные
-  const handleClose = () => {
-    onClose();
-    setTimeout(clearInputValue, 500);
   }
 
   const handleSubmit = (e) => {
@@ -28,15 +17,13 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
     onUpdateAvatar({
       avatar: avatar,
     });
-    setTimeout(clearInputValue, 500);
   }
 
   return (
     <PopupWithForm
       title="Обновить аватар"
       name="edit-avatar"
-      isOpen={isOpen}
-      onClose={handleClose}
+      onClose={onClose}
       onSubmit={handleSubmit}
     >
       <fieldset className="popup__fieldset">

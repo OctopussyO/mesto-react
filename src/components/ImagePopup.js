@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-function ImagePopup({ place, isOpen, onClose }) {
+function ImagePopup({ place, onClose }) {
   // Обработчик клика по оверлею
   const handleOverlayPopupClick = (evt) => {
     if (!evt.target.closest('.popup__container')) {
@@ -25,7 +25,7 @@ function ImagePopup({ place, isOpen, onClose }) {
 
   return (
     <div 
-      className={`popup popup_act_enlarge-image${ isOpen ? ' popup_active' : '' }`}
+      className="popup popup_act_enlarge-image popup_active"
       onMouseDown={ handleOverlayPopupClick }
     >
       <figure className="popup__container">

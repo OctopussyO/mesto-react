@@ -1,18 +1,13 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import PopupWithForm from "./PopupWithForm";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import FormInputWithError from "./FormInputWithError";
 import FormSubmit from "./FormSubmit";
 
-function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
+function EditProfilePopup({ onClose, onUpdateUser }) {
   const currentUser = useContext(CurrentUserContext);
-  const [name, setName] = useState("");
-  const [info, setInfo] = useState("");
-
-  const setCurrentUserData = (currentUser) => {
-    setName(currentUser.name);
-    setInfo(currentUser.about);
-  }
+  const [name, setName] = useState(currentUser.name);
+  const [info, setInfo] = useState(currentUser.about);
 
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -31,23 +26,11 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
     });
   }
 
-  // Чтобы при закрытии попапа после редактирования без сохранения
-  // сначала закрывалось окно, а потом менялись данные
-  const handleClose = () => {
-    onClose();
-    setTimeout(setCurrentUserData, 1000, currentUser);
-  }
-  
-  useEffect(() => {
-    setCurrentUserData(currentUser);
-  }, [currentUser])
-
   return (
     <PopupWithForm
       title="Редактировать профиль"
       name="edit-profile"
-      isOpen={isOpen}
-      onClose={handleClose}
+      onClose={onClose}
       onSubmit={handleSubmit}
     >
       <fieldset className="popup__fieldset">

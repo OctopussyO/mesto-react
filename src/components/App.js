@@ -8,7 +8,7 @@ import EditProfilePopup from "./EditProfilePopup";
 
 import { api } from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import { getInputTemplate, getSubmitTemplate } from '../utils/utils';
+import { getInputTemplate, getSubmitTemplate } from "../utils/utils";
 import EditAvatarPopup from "./EditAvatarPopup";
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState({
     name: "",
     about: "",
-    avatar: ""
+    avatar: "",
   });
 
   const handleEditAvatarClick = () => {
@@ -49,26 +49,23 @@ function App() {
   };
 
   const handleUpdateUser = (userData) => {
-    api.saveUserData(userData)
-      .then((userData) => {
-        setCurrentUser(userData);
-        closeAllPopups();
-      })
-  }
+    api.saveUserData(userData).then((userData) => {
+      setCurrentUser(userData);
+      closeAllPopups();
+    });
+  };
 
   const handleUpdateAvatar = (data) => {
-    api.saveUserAvatar(data)
-      .then((userData) => {
-        setCurrentUser(userData);
-        closeAllPopups();
-      })
-  }
+    api.saveUserAvatar(data).then((userData) => {
+      setCurrentUser(userData);
+      closeAllPopups();
+    });
+  };
 
   useEffect(() => {
-    api.getUserData()
-      .then((userData) => {
-        setCurrentUser(userData);
-      })
+    api.getUserData().then((userData) => {
+      setCurrentUser(userData);
+    });
   }, []);
 
   return (
@@ -85,51 +82,59 @@ function App() {
           />
           <Footer />
         </div>
-        <EditProfilePopup       
-          isOpen={isEditProfilePopupOpen}
-          onClose={closeAllPopups}
-          onUpdateUser={handleUpdateUser}
-        />
-        <EditAvatarPopup 
-          isOpen={isEditAvatarPopupOpen}
-          onClose={closeAllPopups}
-          onUpdateAvatar={handleUpdateAvatar}
-        />
-        <PopupWithForm
-          title="Новое место"
-          name="add-card"
-          isOpen={isAddPlacePopupOpen}
-          onClose={closeAllPopups}
-        >
-          <fieldset className="popup__fieldset">
-            {getInputTemplate({
-              name: "place",
-              placeholder: "Название",
-              type: "text",
-              minLength: "1",
-              maxLength: "30",
-            })}
-            {getInputTemplate({
-              name: "link",
-              placeholder: "Ссылка на картинку",
-              type: "url",
-            })}
-          </fieldset>
-          {getSubmitTemplate("Создать", false)}
-        </PopupWithForm>
-        <ImagePopup
-          isOpen={isImagePopupOpen}
-          place={selectedCard}
-          onClose={closeAllPopups}
-        />
-        <PopupWithForm
-          title="Вы уверены?"
-          name="confirm"
-          // isOpen={ isConfirmPopupOpen }
-          // onClose={ closeAllPopups }
-        >
-          {getSubmitTemplate("Да", true)}
-        </PopupWithForm>
+        {isEditProfilePopupOpen && (
+          <EditProfilePopup
+            onClose={closeAllPopups}
+            onUpdateUser={handleUpdateUser}
+          />
+        )}
+        {isEditAvatarPopupOpen && (
+          <EditAvatarPopup
+            isOpen={isEditAvatarPopupOpen}
+            onClose={closeAllPopups}
+            onUpdateAvatar={handleUpdateAvatar}
+          />
+        )}
+        {isAddPlacePopupOpen && (
+          <PopupWithForm
+            title="Новое место"
+            name="add-card"
+            isOpen={isAddPlacePopupOpen}
+            onClose={closeAllPopups}
+          >
+            <fieldset className="popup__fieldset">
+              {getInputTemplate({
+                name: "place",
+                placeholder: "Название",
+                type: "text",
+                minLength: "1",
+                maxLength: "30",
+              })}
+              {getInputTemplate({
+                name: "link",
+                placeholder: "Ссылка на картинку",
+                type: "url",
+              })}
+            </fieldset>
+            {getSubmitTemplate("Создать", false)}
+          </PopupWithForm>
+        )}
+        {isImagePopupOpen && (
+          <ImagePopup
+            isOpen={isImagePopupOpen}
+            place={selectedCard}
+            onClose={closeAllPopups}
+          />
+        )}
+        {/* {isConfirmPopupOpen && (
+          <PopupWithForm
+            title="Вы уверены?"
+            name="confirm"
+            onClose={ closeAllPopups }
+          >
+            {getSubmitTemplate("Да", true)}
+          </PopupWithForm>
+        )} */}
       </div>
     </CurrentUserContext.Provider>
   );
