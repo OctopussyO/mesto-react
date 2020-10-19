@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-function PopupWithForm({ title, name, children, isOpen, onClose }) {
+function PopupWithForm({ title, name, children, isOpen, onClose, onSubmit }) {
   // Обработчик клика по оверлею
   const handleOverlayPopupClick = (evt) => {
     if (!evt.target.closest('.popup__container')) {
@@ -33,6 +33,7 @@ function PopupWithForm({ title, name, children, isOpen, onClose }) {
         name={name}
         method="GET" 
         noValidate
+        onSubmit={onSubmit}
       >
         <h2 className="popup__heading">{title}</h2>
         {children}

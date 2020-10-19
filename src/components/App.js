@@ -4,48 +4,10 @@ import Main from "./Main";
 import Footer from "./Footer";
 import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
+import EditProfilePopup from "./EditProfilePopup";
 import { api } from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
-
-const getInputTemplate = ({
-  name,
-  placeholder,
-  type,
-  minLength,
-  maxLength,
-}) => {
-  return (
-    <>
-      <input
-        className="popup__input popup__input_valid"
-        name={name}
-        placeholder={placeholder}
-        type={type}
-        minLength={minLength}
-        maxLength={maxLength}
-        required
-        autoComplete="off"
-      />
-      <span className="popup__error popup__error_in_name" />
-    </>
-  );
-};
-
-const getSubmitTemplate = (submitTitle, isSubmitActive) => {
-  return (
-    <button
-      className={`popup__save-button ${
-        isSubmitActive
-          ? "popup__save-button_unblocked"
-          : "popup__save-button_blocked"
-      }`}
-      disabled={!isSubmitActive}
-      type="submit"
-    >
-      {submitTitle}
-    </button>
-  );
-};
+import { getInputTemplate, getSubmitTemplate } from '../utils/utils';
 
 function App() {
   // Используем хуки состояния для открытия попапов
@@ -56,7 +18,11 @@ function App() {
 
   const [selectedCard, setSelectedCard] = useState({});
 
-  const [currentUser, setCurrentUser] = useState("");
+  const [currentUser, setCurrentUser] = useState({
+    name: "",
+    about: "",
+    avatar: ""
+  });
 
   const handleEditAvatarClick = () => {
     setEditAvatarPopupState(true);
@@ -80,6 +46,14 @@ function App() {
     setImagePopupState(false);
   };
 
+  const handleUpdateUser = (userData) => {
+    api.saveUserData(userData)
+      .then((userData) => {
+        setCurrentUser(userData);
+        closeAllPopups();
+      })
+  }
+
   useEffect(() => {
     api.getUserData()
       .then((userData) => {
@@ -101,30 +75,11 @@ function App() {
           />
           <Footer />
         </div>
-        <PopupWithForm
-          title="Редактировать профиль"
-          name="edit-profile"
+        <EditProfilePopup       
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
-        >
-          <fieldset className="popup__fieldset">
-            {getInputTemplate({
-              name: "name",
-              placeholder: "Имя",
-              type: "text",
-              minLength: "2",
-              maxLength: "40",
-            })}
-            {getInputTemplate({
-              name: "info",
-              placeholder: "Профессия",
-              type: "text",
-              minLength: "2",
-              maxLength: "200",
-            })}
-          </fieldset>
-          {getSubmitTemplate("Сохранить", false)}
-        </PopupWithForm>
+          onUpdateUser={handleUpdateUser}
+        />
         <PopupWithForm
           title="Новое место"
           name="add-card"

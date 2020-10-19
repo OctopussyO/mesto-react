@@ -1,3 +1,5 @@
+import React from 'react';
+
 // Объект исходных данных пользователя
 export const initialUserData = {
   name: 'Фёдор Конюхов',
@@ -94,3 +96,43 @@ export const avatarPopupSelector = '.popup_act_edit-avatar';
 export const confirmPopupSelector = '.popup_act_confirm';
 export const sectionSelector = '.gallery';
 export const cardSelector = '.card-template';
+
+export const getInputTemplate = ({
+  name,
+  placeholder,
+  type,
+  minLength,
+  maxLength,
+}) => {
+  return (
+    <>
+      <input
+        className="popup__input popup__input_valid"
+        name={name}
+        placeholder={placeholder}
+        type={type}
+        minLength={minLength}
+        maxLength={maxLength}
+        required
+        autoComplete="off"
+      />
+      <span className={`popup__error popup__error_in_${name}`} />
+    </>
+  );
+};
+
+export const getSubmitTemplate = (submitTitle, isSubmitActive) => {
+  return (
+    <button
+      className={`popup__save-button ${
+        isSubmitActive
+          ? "popup__save-button_unblocked"
+          : "popup__save-button_blocked"
+      }`}
+      disabled={!isSubmitActive}
+      type="submit"
+    >
+      {submitTitle}
+    </button>
+  );
+};
