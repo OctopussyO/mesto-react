@@ -6,6 +6,7 @@ import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
+import ConfirmPopup from "./ConfirmPopup";
 import { api } from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
@@ -20,6 +21,7 @@ function App() {
   const [isAddPlacePopupOpen, setAddPlacePopupState] = useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopupState] = useState(false);
   const [isImagePopupOpen, setImagePopupState] = useState(false);
+  const [isConfirmPopupOpen, setConfirmPopupState] = useState(false);
 
   const handleEditAvatarClick = () => {
     setEditAvatarPopupState(true);
@@ -43,6 +45,7 @@ function App() {
     setEditProfilePopupState(false);
     setAddPlacePopupState(false);
     setImagePopupState(false);
+    setConfirmPopupState(false);
   };
 
   // Стейт-переменные для текущего состояния страницы
@@ -103,11 +106,21 @@ function App() {
   };
 
   const handleCardDelete = (card) => {
-    api.deleteItem(card._id).then(() => {
+    setSelectedCard(card);
+    setConfirmPopupState(true);
+  };
+  
+  const handleConfirmDelete = (card) => {
+    api.deleteItem(card._id)
+    .then(() => {
       const newCards = cards.filter((cardItem) => cardItem._id !== card._id);
       setCards(newCards);
-    });
-  };
+    }).catch((err) => {
+      alert(err);
+    }).finally(() => {
+      closeAllPopups();
+    });    
+  }
 
   useEffect(() => {
     Promise.all([api.getUserData(), api.getData()])
@@ -160,20 +173,21 @@ function App() {
           />
         )}
         {isAddPlacePopupOpen && (
-          <AddPlacePopup onClose={closeAllPopups} onAddPlace={handleAddPlace} />
+          <AddPlacePopup
+            onClose={closeAllPopups}
+            onAddPlace={handleAddPlace} />
         )}
         {isImagePopupOpen && (
-          <ImagePopup place={selectedCard} onClose={closeAllPopups} />
+          <ImagePopup
+            place={selectedCard}
+            onClose={closeAllPopups} />
         )}
-        {/* {isConfirmPopupOpen && (
-          <PopupWithForm
-            title="Вы уверены?"
-            name="confirm"
+        {isConfirmPopupOpen && (
+          <ConfirmPopup
+            deletedCard={selectedCard}
             onClose={ closeAllPopups }
-          >
-            {getSubmitTemplate("Да", true)}
-          </PopupWithForm>
-        )} */}
+            onConfirmDelete={handleConfirmDelete}/>
+        )}
       </div>
     </CurrentUserContext.Provider>
   );
