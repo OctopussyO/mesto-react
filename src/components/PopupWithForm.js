@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import FormSubmit from "./FormSubmit";
 
 function PopupWithForm({
@@ -14,6 +14,12 @@ function PopupWithForm({
   // Определяем, нажата ли кнопка отправки формы для подстановки загрузочного текста
   const [isSubmitted, setSubmitState] = useState(false);
 
+  // Определяем форму для валидации
+  const formRef = useRef();
+
+  // Стейт-переменная для изменения валидности кнопки отправки формы в зависимости от валидности формы
+  const [isSubmitValid, setSubmitValidity] = useState(isSubmitActive);
+
   // Обработчик клика по оверлею
   const handleOverlayPopupClick = (evt) => {
     if (!evt.target.closest(".popup__container")) {
@@ -28,6 +34,7 @@ function PopupWithForm({
     }
   };
 
+  // Обработчик отправки формы
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitState(true);
@@ -42,6 +49,15 @@ function PopupWithForm({
     };
   });
 
+  // Валидация формы
+  useEffect(() => {
+    const isFormValid = [...formRef.current.elements]
+      .filter((elem) => elem.name)
+      .every((elem) => elem.validity.valid);
+
+    setSubmitValidity(isFormValid);
+  });
+
   return (
     <div
       className={`popup popup_act_${name} popup_active`}
@@ -54,13 +70,14 @@ function PopupWithForm({
         method="GET"
         noValidate
         onSubmit={handleSubmit}
+        ref={formRef}
       >
         <h2 className="popup__heading">{title}</h2>
         {children}
         <FormSubmit
           submitTitle={submitTitle}
           loadingTitle={submitLoadingTitle}
-          isActive={isSubmitActive}
+          isActive={isSubmitValid}
           isClicked={isSubmitted}
         />
         <button

@@ -24,7 +24,7 @@ function EditAvatarPopup({ onClose, onUpdateAvatar }) {
       onSubmit={handleSubmit}
       submitTitle="Сохранить"
       submitLoadingTitle="Сохранение..."
-      isSubmitActive={true}
+      isSubmitActive={false}
     >
       <fieldset className="popup__fieldset">
         <FormInputWithError

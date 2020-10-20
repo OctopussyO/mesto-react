@@ -10,7 +10,7 @@ function AddPlacePopup({ onClose, onAddPlace }) {
   const handlePlaceChange = (e) => {
     setPlace(e.target.value);
   };
-
+  
   const handleLinkChange = (e) => {
     setLink(e.target.value);
   };
@@ -30,7 +30,7 @@ function AddPlacePopup({ onClose, onAddPlace }) {
       onSubmit={handleSubmit}
       submitTitle="Создать"
       submitLoadingTitle="Сохранение..."
-      isSubmitActive={true}
+      isSubmitActive={false}
     >
       <fieldset className="popup__fieldset">
         <FormInputWithError

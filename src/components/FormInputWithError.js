@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 const FormInputWithError = React.memo(
   ({
@@ -11,6 +11,11 @@ const FormInputWithError = React.memo(
     onChange,
     inputRef,
   }) => {
+    const [errorMessage, setErrorMessage] = useState("");
+    const handleChange = (e) => {
+      setErrorMessage(e.target.validationMessage);
+      onChange(e);
+    }
     return (
       <>
         <input
@@ -23,10 +28,12 @@ const FormInputWithError = React.memo(
           required
           autoComplete="off"
           value={value}
-          onChange={onChange}
+          onChange={handleChange}
           ref={inputRef}
         />
-        <span className={`popup__error popup__error_in_${name}`} />
+        <span className={`popup__error popup__error_in_${name}`}>
+          {errorMessage}
+        </span>
       </>
     );
   }
