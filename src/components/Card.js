@@ -2,24 +2,24 @@ import React, { useContext } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function Card({ name, link, likes, _id, owner, onCardClick, onCardLike, onCardDelete }) {
-  const handleClick = () => {
-    onCardClick({ name, link });
-  };
-
-  const handleLikeClick = () => {
-    onCardLike({likes, _id});
-  }
-
-  const handleDeleteClick = () => {
-    onCardDelete({_id});
-  }
-
   const currentUser = useContext(CurrentUserContext);
   const isOwn = owner._id === currentUser._id;
   const isLiked = likes.some((like) => like._id === currentUser._id);
   const cardLikeButtonClassName = `card__button card__button_act_like ${
     isLiked && "card__button_active"
   } page__button`;
+
+  const handleClick = () => {
+    onCardClick({ name, link });
+  };
+
+  const handleLikeClick = () => {
+    onCardLike(isLiked, {likes, _id});
+  }
+
+  const handleDeleteClick = () => {
+    onCardDelete({_id});
+  }
 
   return (
     <figure className="card">
