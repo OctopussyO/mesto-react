@@ -1,6 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import FormSubmit from "./FormSubmit";
 
-function PopupWithForm({ title, name, children, onClose, onSubmit }) {
+function PopupWithForm({
+  title,
+  name,
+  children,
+  onClose,
+  onSubmit,
+  submitTitle,
+  submitLoadingTitle,
+  isSubmitActive,
+}) {
+  // Определяем, нажата ли кнопка отправки формы для подстановки загрузочного текста
+  const [isSubmitted, setSubmitState] = useState(false);
+
   // Обработчик клика по оверлею
   const handleOverlayPopupClick = (evt) => {
     if (!evt.target.closest(".popup__container")) {
@@ -13,6 +26,12 @@ function PopupWithForm({ title, name, children, onClose, onSubmit }) {
     if (evt.key === "Escape") {
       onClose();
     }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmitState(true);
+    onSubmit();
   };
 
   // Используем хук эффекта для закрытия модалки по нажатию клавиши "Escape"
@@ -34,10 +53,16 @@ function PopupWithForm({ title, name, children, onClose, onSubmit }) {
         name={name}
         method="GET"
         noValidate
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit}
       >
         <h2 className="popup__heading">{title}</h2>
         {children}
+        <FormSubmit
+          submitTitle={submitTitle}
+          loadingTitle={submitLoadingTitle}
+          isActive={isSubmitActive}
+          isClicked={isSubmitted}
+        />
         <button
           className="popup__close-button page__button"
           type="button"

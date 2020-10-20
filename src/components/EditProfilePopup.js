@@ -2,7 +2,6 @@ import React, { useState, useContext } from "react";
 import PopupWithForm from "./PopupWithForm";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import FormInputWithError from "./FormInputWithError";
-import FormSubmit from "./FormSubmit";
 
 function EditProfilePopup({ onClose, onUpdateUser }) {
   // Используем контекст для установки начальных значений стейт-переменных для управляемых компонентов
@@ -18,9 +17,7 @@ function EditProfilePopup({ onClose, onUpdateUser }) {
     setInfo(e.target.value);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
+  const handleSubmit = () => {
     onUpdateUser({
       name,
       about: info,
@@ -33,6 +30,9 @@ function EditProfilePopup({ onClose, onUpdateUser }) {
       name="edit-profile"
       onClose={onClose}
       onSubmit={handleSubmit}
+      submitTitle="Сохранить"
+      submitLoadingTitle="Сохранение..."
+      isSubmitActive={true}
     >
       <fieldset className="popup__fieldset">
         <FormInputWithError
@@ -54,7 +54,6 @@ function EditProfilePopup({ onClose, onUpdateUser }) {
           onChange={handleInfoChange}
         />
       </fieldset>
-      <FormSubmit submitTitle="Сохранить" isSubmitActive={true} />
     </PopupWithForm>
   );
 }

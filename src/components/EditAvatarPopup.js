@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import PopupWithForm from "./PopupWithForm";
 import FormInputWithError from "./FormInputWithError";
-import FormSubmit from "./FormSubmit";
 
 function EditAvatarPopup({ onClose, onUpdateAvatar }) {
   const avatarRef = useRef();
@@ -11,9 +10,7 @@ function EditAvatarPopup({ onClose, onUpdateAvatar }) {
     setAvatar(avatarRef.current.value);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
+  const handleSubmit = () => {
     onUpdateAvatar({
       avatar: avatar,
     });
@@ -25,6 +22,9 @@ function EditAvatarPopup({ onClose, onUpdateAvatar }) {
       name="edit-avatar"
       onClose={onClose}
       onSubmit={handleSubmit}
+      submitTitle="Сохранить"
+      submitLoadingTitle="Сохранение..."
+      isSubmitActive={true}
     >
       <fieldset className="popup__fieldset">
         <FormInputWithError
@@ -36,7 +36,6 @@ function EditAvatarPopup({ onClose, onUpdateAvatar }) {
           onChange={handleAvatarChange}
         />
       </fieldset>
-      <FormSubmit submitTitle="Сохранить" isSubmitActive={true} />
     </PopupWithForm>
   );
 }

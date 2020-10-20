@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import FormInputWithError from "./FormInputWithError";
-import FormSubmit from "./FormSubmit";
 import PopupWithForm from "./PopupWithForm";
 
 function AddPlacePopup({ onClose, onAddPlace }) {
@@ -16,9 +15,7 @@ function AddPlacePopup({ onClose, onAddPlace }) {
     setLink(e.target.value);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
+  const handleSubmit = () => {
     onAddPlace({
       name: place,
       link,
@@ -31,6 +28,9 @@ function AddPlacePopup({ onClose, onAddPlace }) {
       name="add-card"
       onClose={onClose}
       onSubmit={handleSubmit}
+      submitTitle="Создать"
+      submitLoadingTitle="Сохранение..."
+      isSubmitActive={true}
     >
       <fieldset className="popup__fieldset">
         <FormInputWithError
@@ -50,7 +50,6 @@ function AddPlacePopup({ onClose, onAddPlace }) {
           onChange={handleLinkChange}
         />
       </fieldset>
-      <FormSubmit submitTitle="Создать" isSubmitActive={true} />
     </PopupWithForm>
   );
 }

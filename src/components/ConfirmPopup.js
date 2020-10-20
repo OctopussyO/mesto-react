@@ -1,5 +1,4 @@
 import React from "react";
-import FormSubmit from "./FormSubmit";
 import PopupWithForm from "./PopupWithForm";
 
 function ConfirmPopup({ deletedCard, onConfirmDelete, onClose }) {
@@ -13,9 +12,10 @@ function ConfirmPopup({ deletedCard, onConfirmDelete, onClose }) {
       name="confirm"
       onClose={onClose}
       onSubmit={handleSubmit}
-    >
-      <FormSubmit submitTitle="Да" isSubmitActive={true} />
-    </PopupWithForm>
+      submitTitle="Да"
+      submitLoadingTitle="Удаление..."
+      isSubmitActive={true}
+    />
   );
 }
 
