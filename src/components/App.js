@@ -61,22 +61,33 @@ function App() {
 
   // Обработчики для попапов
   const handleUpdateUser = (userData) => {
-    api.saveUserData(userData).then((userData) => {
-      setCurrentUser(userData);
-      closeAllPopups();
-    });
+    api.saveUserData(userData)
+      .then((userData) => {
+        setCurrentUser(userData);
+      })
+      .catch((err) => {
+        alert(err);
+      })
+      .finally(() => {
+        closeAllPopups();
+      });;
   };
 
   const handleUpdateAvatar = (data) => {
-    api.saveUserAvatar(data).then((userData) => {
-      setCurrentUser(userData);
-      closeAllPopups();
-    });
+    api.saveUserAvatar(data)
+      .then((userData) => {
+        setCurrentUser(userData);
+      })
+      .catch((err) => {
+        alert(err);
+      })
+      .finally(() => {
+        closeAllPopups();
+      });;
   };
 
   const handleAddPlace = (newCard) => {
-    api
-      .saveNewItem(newCard)
+    api.saveNewItem(newCard)
       .then((newCard) => {
         setCards([newCard, ...cards]);
       })
