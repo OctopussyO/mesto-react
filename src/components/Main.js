@@ -2,8 +2,16 @@ import React, { useContext } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 import Card from "./Card.js";
 
-function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick, cards, onCardLike, onCardDelete }) {
-
+function Main({
+  onEditProfile,
+  onAddPlace,
+  onEditAvatar,
+  onCardClick,
+  cards,
+  onCardLike,
+  onCardDelete,
+}) {
+  // Достаём данные пользователя из контекста
   const userData = useContext(CurrentUserContext);
   const userName = userData.name;
   const userDescription = userData.about;
@@ -24,10 +32,6 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick, cards, onC
           />
         </div>
         <div className="profile__data">
-          {/* Отключаем встроенное правило для следующей строки, чтобы консоль 
-          не ругалась на отсутствие текста в заголовке 
-          После заполнения поля это уже не нужно, но оставлю пока на память */}
-          {/* eslint-disable-next-line */}
           <h1 className="profile__name">{userName}</h1>
           <button
             className="profile__edit-button page__button"

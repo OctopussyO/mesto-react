@@ -1,7 +1,16 @@
 import React from "react";
 
 const FormInputWithError = React.memo(
-  ({name, placeholder, type, minLength, maxLength, value, onChange, inputRef}) => {
+  ({
+    name,
+    placeholder,
+    type,
+    minLength,
+    maxLength,
+    value,
+    onChange,
+    inputRef,
+  }) => {
     return (
       <>
         <input

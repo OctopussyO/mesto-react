@@ -5,17 +5,18 @@ import FormInputWithError from "./FormInputWithError";
 import FormSubmit from "./FormSubmit";
 
 function EditProfilePopup({ onClose, onUpdateUser }) {
+  // Используем контекст для установки начальных значений стейт-переменных для управляемых компонентов
   const currentUser = useContext(CurrentUserContext);
   const [name, setName] = useState(currentUser.name);
   const [info, setInfo] = useState(currentUser.about);
 
   const handleNameChange = (e) => {
     setName(e.target.value);
-  }
+  };
 
   const handleInfoChange = (e) => {
     setInfo(e.target.value);
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -24,7 +25,7 @@ function EditProfilePopup({ onClose, onUpdateUser }) {
       name,
       about: info,
     });
-  }
+  };
 
   return (
     <PopupWithForm

@@ -1,47 +1,48 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 
 function PopupWithForm({ title, name, children, onClose, onSubmit }) {
   // Обработчик клика по оверлею
   const handleOverlayPopupClick = (evt) => {
-    if (!evt.target.closest('.popup__container')) {
+    if (!evt.target.closest(".popup__container")) {
       onClose();
     }
-  }
-  
+  };
+
   // Обработчик нажатия клавиши "Escape"
   const handleEscape = (evt) => {
-    if (evt.key === 'Escape') {
+    if (evt.key === "Escape") {
       onClose();
     }
-  }  
+  };
 
   // Используем хук эффекта для закрытия модалки по нажатию клавиши "Escape"
   useEffect(() => {
-    document.body.addEventListener('keydown', handleEscape);
+    document.body.addEventListener("keydown", handleEscape);
     return () => {
-      document.body.removeEventListener('keydown', handleEscape);
-    }
-  })
+      document.body.removeEventListener("keydown", handleEscape);
+    };
+  });
 
   return (
-    <div className={`popup popup_act_${name} popup_active`}
-      onMouseDown={ handleOverlayPopupClick }
+    <div
+      className={`popup popup_act_${name} popup_active`}
+      onMouseDown={handleOverlayPopupClick}
     >
-      <form 
+      <form
         action="#"
         className="popup__container popup__container_with_form"
         name={name}
-        method="GET" 
+        method="GET"
         noValidate
         onSubmit={onSubmit}
       >
         <h2 className="popup__heading">{title}</h2>
         {children}
-        <button 
-          className="popup__close-button page__button" 
-          type="button" 
+        <button
+          className="popup__close-button page__button"
+          type="button"
           aria-label="Закрыть"
-          onClick={ onClose }
+          onClick={onClose}
         />
       </form>
     </div>

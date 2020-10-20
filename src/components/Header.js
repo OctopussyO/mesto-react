@@ -1,8 +1,7 @@
-import React from 'react';
-import logoPath from '../images/logo.svg';
+import React from "react";
+import logoPath from "../images/logo.svg";
 
 function Header() {
-
   return (
     <header className="header">
       <img
@@ -11,7 +10,7 @@ function Header() {
         alt="Логотип проекта 'Место'"
       />
     </header>
-  )
+  );
 }
 
 export default Header;

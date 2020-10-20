@@ -1,6 +1,6 @@
 import React from "react";
 
-const FormSubmit = React.memo(({submitTitle, isSubmitActive}) => {
+const FormSubmit = React.memo(({ submitTitle, isSubmitActive }) => {
   return (
     <button
       className={`popup__save-button ${
@@ -14,6 +14,6 @@ const FormSubmit = React.memo(({submitTitle, isSubmitActive}) => {
       {submitTitle}
     </button>
   );
-})
+});
 
 export default FormSubmit;

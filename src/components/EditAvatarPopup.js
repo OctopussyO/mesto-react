@@ -8,16 +8,16 @@ function EditAvatarPopup({ onClose, onUpdateAvatar }) {
   const [avatar, setAvatar] = useState("");
 
   const handleAvatarChange = () => {
-    setAvatar(avatarRef.current.value)
-  }
+    setAvatar(avatarRef.current.value);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     onUpdateAvatar({
       avatar: avatar,
     });
-  }
+  };
 
   return (
     <PopupWithForm
@@ -27,7 +27,7 @@ function EditAvatarPopup({ onClose, onUpdateAvatar }) {
       onSubmit={handleSubmit}
     >
       <fieldset className="popup__fieldset">
-        <FormInputWithError 
+        <FormInputWithError
           name="avatar"
           placeholder="Ссылка на аватар"
           type="url"
@@ -38,7 +38,7 @@ function EditAvatarPopup({ onClose, onUpdateAvatar }) {
       </fieldset>
       <FormSubmit submitTitle="Сохранить" isSubmitActive={true} />
     </PopupWithForm>
-  )
+  );
 }
 
 export default EditAvatarPopup;

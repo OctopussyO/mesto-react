@@ -2,19 +2,18 @@ import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
-import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
-
-import { api } from "../utils/api";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import { getInputTemplate, getSubmitTemplate } from "../utils/utils";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
+import { api } from "../utils/api";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function App() {
   // Переменная состояния для загрузки (показываем/убираем спиннер)
   const [isLoading, setLoadingState] = useState(true);
+
+  const [wasResponse, setResponseState] = useState(false);
 
   // Используем хуки состояния для открытия/закрытия попапов
   const [isEditProfilePopupOpen, setEditProfilePopupState] = useState(false);
@@ -56,67 +55,69 @@ function App() {
   });
 
   const [cards, setCards] = useState([]);
-  
-  //Обработчики для попапов
+
+  // Обработчики для попапов
   const handleUpdateUser = (userData) => {
     api.saveUserData(userData).then((userData) => {
       setCurrentUser(userData);
       closeAllPopups();
     });
   };
-  
+
   const handleUpdateAvatar = (data) => {
     api.saveUserAvatar(data).then((userData) => {
       setCurrentUser(userData);
       closeAllPopups();
     });
   };
-  
+
   const handleAddPlace = (newCard) => {
-    api.saveNewItem(newCard)
+    api
+      .saveNewItem(newCard)
       .then((newCard) => {
         setCards([newCard, ...cards]);
+      })
+      .catch((err) => {
+        alert(err);
       })
       .finally(() => {
         closeAllPopups();
       });
   };
-    
-    
+
   // Обработчики для карточек
   const handleCardLike = (isLiked, card) => {
     const handleLikeClick = isLiked
       ? api.unlikeItem.bind(api)
       : api.likeItem.bind(api);
-    handleLikeClick(card._id, !isLiked).then((newCard) => {
-      const newCards = cards.map((cardItem) =>
-        cardItem._id === card._id ? newCard : cardItem
-      );
+    handleLikeClick(card._id, !isLiked)
+      .then((newCard) => {
+        const newCards = cards.map((cardItem) =>
+          cardItem._id === card._id ? newCard : cardItem
+        );
+        setCards(newCards);
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  };
+
+  const handleCardDelete = (card) => {
+    api.deleteItem(card._id).then(() => {
+      const newCards = cards.filter((cardItem) => cardItem._id !== card._id);
       setCards(newCards);
     });
   };
 
-  const handleCardDelete = (card) => {
-    api.deleteItem(card._id)
-    .then(() => {
-      const newCards = cards.filter(cardItem => cardItem._id !== card._id);
-      setCards(newCards);
-    })
-  };
-
   useEffect(() => {
-    api
-    .getUserData()
-      .then((userData) => {
+    Promise.all([api.getUserData(), api.getData()])
+      .then(([userData, cardsData]) => {
         setCurrentUser(userData);
-      });
-  }, []);
-
-  useEffect(() => {
-    api
-      .getData()
-      .then((cardsData) => {
         setCards(cardsData);
+        setResponseState(true);
+      })
+      .catch((err) => {
+        alert(err);
       })
       .finally(() => {
         setLoadingState(false);
@@ -132,7 +133,7 @@ function App() {
           {isLoading ? (
             <div className="spinner spinner_visible" />
           ) : (
-            <div className="content">
+            <div className={`content ${!wasResponse && "content_hidden"}`}>
               <Main
                 onAddPlace={handleAddPlaceClick}
                 onEditAvatar={handleEditAvatarClick}
@@ -154,23 +155,15 @@ function App() {
         )}
         {isEditAvatarPopupOpen && (
           <EditAvatarPopup
-            isOpen={isEditAvatarPopupOpen}
             onClose={closeAllPopups}
             onUpdateAvatar={handleUpdateAvatar}
           />
         )}
         {isAddPlacePopupOpen && (
-          <AddPlacePopup 
-            onClose={closeAllPopups}
-            onAddPlace={handleAddPlace}
-          />
+          <AddPlacePopup onClose={closeAllPopups} onAddPlace={handleAddPlace} />
         )}
         {isImagePopupOpen && (
-          <ImagePopup
-            isOpen={isImagePopupOpen}
-            place={selectedCard}
-            onClose={closeAllPopups}
-          />
+          <ImagePopup place={selectedCard} onClose={closeAllPopups} />
         )}
         {/* {isConfirmPopupOpen && (
           <PopupWithForm
