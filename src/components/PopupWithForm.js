@@ -47,7 +47,7 @@ function PopupWithForm({
     return () => {
       document.body.removeEventListener("keydown", handleEscape);
     };
-  });
+  }, []);
 
   // Валидация формы
   useEffect(() => {

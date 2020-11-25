@@ -70,7 +70,7 @@ function App() {
       })
       .finally(() => {
         closeAllPopups();
-      });;
+      });
   };
 
   const handleUpdateAvatar = (data) => {
@@ -83,7 +83,7 @@ function App() {
       })
       .finally(() => {
         closeAllPopups();
-      });;
+      });
   };
 
   const handleAddPlace = (newCard) => {
